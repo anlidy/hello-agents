@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "openai>=2.38.0",
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.0.0",
     "requests>=2.34.2",
     "tavily-python>=0.7.24",
 ]
