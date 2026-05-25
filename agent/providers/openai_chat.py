@@ -18,6 +18,10 @@ class OpenAIChatProvider:
             self.client = AsyncOpenAI()
 
     async def chat_completion(self, request: ChatRequest) -> ChatResponse:
+        client = self.client
+        if client is None:
+            raise RuntimeError("OpenAI client is not initialized")
+
         payload: dict[str, Any] = {
             "model": request.model,
             "messages": [self._message_to_payload(message) for message in request.messages],
@@ -25,7 +29,7 @@ class OpenAIChatProvider:
         if request.tools:
             payload["tools"] = request.tools
 
-        response = await self.client.chat.completions.create(**payload)
+        response = await client.chat.completions.create(**payload)
         choice = response.choices[0]
         message = choice.message
         tool_calls = self._parse_tool_calls(getattr(message, "tool_calls", None))
